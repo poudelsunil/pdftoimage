@@ -44,7 +44,7 @@ public class MyConverter {
                 LOG.info("Wrote image : " + outFile.getAbsolutePath());
 
                 imageNumber++;
-            }File validated
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
