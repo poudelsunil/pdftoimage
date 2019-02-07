@@ -1,0 +1,5 @@
+.idea
+
+#ignore all class files
+*.class
+*.attach*
