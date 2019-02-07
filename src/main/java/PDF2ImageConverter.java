@@ -8,8 +8,11 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class PDF2ImageConverter {
+
+    public static final Logger LOG = Logger.getLogger(MyConverter.class.getName());
 
     private byte[] pdfByteData;
 
@@ -98,6 +101,11 @@ public class PDF2ImageConverter {
     }
 
     public List<byte[]> convertToImage() throws Exception {
+
+        if(!isPDF(this.pdfByteData)){
+            throw new Exception("Invalid input file format, input byte must be in pdf format");
+        }
+
         PDDocument document = PDDocument.load(this.pdfByteData);
         PDFRenderer pdfRenderer = new PDFRenderer(document);
         List<byte[]> convertedImages = new ArrayList<>();
@@ -107,7 +115,7 @@ public class PDF2ImageConverter {
             BufferedImage image = pdfRenderer.renderImageWithDPI(page, this.dpi, this.imageType);
 
             if (this.skipBlankPage && isBlank(image, this.blankPageDecidingFactor, this.nonBlankWhiteMaxValue)) {
-                System.out.println("Skipping empty page with page number :" + page);
+                LOG.info("Skipping empty page with page number :" + page);
                 continue;
             }
             if (this.maxPdfPage != 0 && nonEmptyPages >= this.maxPdfPage) {
@@ -120,14 +128,18 @@ public class PDF2ImageConverter {
         }
 
         document.close();
+        LOG.info("PDF to Image conversion completed");
         return convertedImages;
     }
 
 
-    private static Boolean isBlank(BufferedImage bufferedImage, double percentageToDecideBlankPage, int nonBlankWhiteMaxValue) {
+    public static boolean isBlank(BufferedImage bufferedImage, double percentageToDecideBlankPage, int nonBlankWhiteMaxValue) {
         long count = 0;
         int height = bufferedImage.getHeight();
         int width = bufferedImage.getWidth();
+
+        LOG.info("Checking is current page is blank or not");
+
         Double areaFactor = (width * height) * percentageToDecideBlankPage;
 
         for (int x = 0; x < width; x++) {
@@ -144,6 +156,22 @@ public class PDF2ImageConverter {
             return true;
         }
 
+        return false;
+    }
+
+    public static boolean isPDF(byte[] data) {
+        LOG.info( "Validating input byte array is of PDF or not");
+        if (data != null && data.length > 4 &&
+                data[0] == 0x25 && // %
+                data[1] == 0x50 && // P
+                data[2] == 0x44 && // D
+                data[3] == 0x46 && // F
+                data[4] == 0x2D) { // -
+
+            LOG.info( "File validated");
+            return true;
+        }
+        LOG.info( "Invalid file format");
         return false;
     }
 
