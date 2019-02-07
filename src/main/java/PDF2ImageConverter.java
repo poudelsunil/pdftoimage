@@ -10,36 +10,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PDF2ImageConverter {
+
     private byte[] pdfByteData;
 
-    private int maxPdfPage; /*3*/
-    private boolean skipBlankPage; /*true*/
-    private double blankPageDecidingFactor; /*0.999*/
-    private int nonBlankWhiteMaxValue; /*248*/
-    private String outputImageFormat; /*png/jpg*/
-    private int dpi; /*100 - control imagequality*/
-    private ImageType imageType; /*ImageType.RGB*/
+    private int maxPdfPage; /* default 0 for no page number size restriction*/
+    private boolean skipBlankPage; /*default true to skip blank page*/
+    private double blankPageDecidingFactor; /*default 0.999 : if 99.9% of page is white then we assume that page as blank*/
+    private int nonBlankWhiteMaxValue; /* default 248; pixel with more then this rgb white value will treat as blank*/
+    private String outputImageFormat; /*default : jpg can accept png also*/
+    private int dpi; /*default : 100; less dpi indicate low quality/dpi image*/
+    private ImageType imageType; /*default : ImageType.RGB; can be any value from enum pdfbox.rendering.ImageType*/
 
     public static class Builder {
+
         private final byte[] pdfByteData;
-        private int maxPdfPage; /*3*/
-        private boolean skipBlankPage; /*true*/
-        private double blankPageDecidingFactor; /*0.999*/
-        private int nonBlankWhiteMaxValue; /*248*/
-        private String outputImageFormat; /*png/jpg*/
-        private int dpi; /*100 - control imagequality*/
-        private ImageType imageType; /*ImageType.RGB*/
+        private int maxPdfPage;
+        private boolean skipBlankPage;
+        private double blankPageDecidingFactor;
+        private int nonBlankWhiteMaxValue;
+        private String outputImageFormat;
+        private int dpi;
+        private ImageType imageType;
 
         public Builder(byte[] pdfByteData) {
 
             this.pdfByteData = pdfByteData;
-            maxPdfPage = 0;
-            skipBlankPage = true;
-            blankPageDecidingFactor = 0.999;
-            nonBlankWhiteMaxValue = 248;
-            outputImageFormat = "jpg";
-            dpi = 100;
-            imageType = ImageType.RGB;
+            this.maxPdfPage = 0;
+            this.skipBlankPage = true;
+            this.blankPageDecidingFactor = 0.999;
+            this.nonBlankWhiteMaxValue = 248;
+            this.outputImageFormat = "jpg";
+            this.dpi = 100;
+            this.imageType = ImageType.RGB;
         }
 
         public Builder maxPdfPage(int maxPdfPage) {

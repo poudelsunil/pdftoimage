@@ -3,3 +3,4 @@
 #ignore all class files
 *.class
 *.attach*
+target
