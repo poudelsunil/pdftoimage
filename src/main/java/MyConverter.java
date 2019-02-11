@@ -17,9 +17,9 @@ public class MyConverter {
 
     public static void main(String[] args) {
 
-        final String SOURCE_PDF_DIR = "/home/sunil/Desktop/pdftoimage/sample.pdf";
-        final String DEST_DIR = "/home/sunil/Desktop/pdftoimage/converted/";
-        final String OUT_IMAGE_FORMAT = "jpg";
+        final String SOURCE_PDF_DIR = args[0]; // "/home/sunil/Desktop/pdftoimage/sample.pdf";
+        final String DEST_DIR = args[1]; // "/home/sunil/Desktop/pdftoimage/converted/";
+        final String OUT_IMAGE_FORMAT = args[2] ;//  "jpg";
 
         try {
             byte[] data = Files.readAllBytes(Paths.get(SOURCE_PDF_DIR));

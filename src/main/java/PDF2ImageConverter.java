@@ -37,7 +37,7 @@ public class PDF2ImageConverter {
 
         public Builder(byte[] pdfByteData) {
 
-            this.pdfByteData = pdfByteData;
+            this.pdfByteData = pdfByteData.clone();
             this.maxPdfPage = 0;
             this.skipBlankPage = true;
             this.blankPageDecidingFactor = 0.999;
