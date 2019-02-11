@@ -1,4 +1,4 @@
-# pdftoimage
+# pdftoimage converter using (org.apache.pdfbox)
 
 ## this will convert pdf file to image(jpg or png), following options are available.
 - option to skip blank page : default true
